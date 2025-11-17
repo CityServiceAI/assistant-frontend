@@ -13,8 +13,12 @@
     "format:fix": "prettier \"src/**/*.{ts,tsx,css,scss,md}\" --write"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.5",
+    "@mui/material": "^7.3.5",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0" 
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
