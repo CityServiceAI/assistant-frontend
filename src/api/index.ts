@@ -1,7 +1,7 @@
-import type { ChatRequestDto, ChatResponseDto } from '@/types';
+import type { Conversation, ConversationRequest } from '@/types';
 
-export const sendChatMessage = async (body: ChatRequestDto): Promise<ChatResponseDto> => {
-  const response = await fetch('/api/chat', {
+export const sendConversation = async (body: ConversationRequest): Promise<Conversation> => {
+  const response = await fetch('/api/conversations/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -10,8 +10,10 @@ export const sendChatMessage = async (body: ChatRequestDto): Promise<ChatRespons
   });
 
   if (!response.ok) {
-    throw new Error(`Chat API error: ${response.status}`);
+    throw new Error(`Conversation API error: ${response.status}`);
   }
 
-  return response.json() as Promise<ChatResponseDto>;
+  const result = response.json() as Promise<Conversation>;
+  console.log(result);
+  return result;
 };

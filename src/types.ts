@@ -5,17 +5,32 @@ export const ROLE = {
 
 export type Role = (typeof ROLE)[keyof typeof ROLE];
 
-export interface ChatMessage {
+export interface ConversationMessage {
+  role: Role;
+  content: string;
+  agent?: string | null;
+}
+
+export interface ConversationContext {
+  issue_category?: string | null;
+  issue_address?: string | null;
+  issue_category_level?: string | null;
+  issuer_name?: string | null;
+  service_provider_name?: string | null;
+  service_provider_email?: string | null;
+  service_provider_phones?: string[] | null;
+  emergency?: string | null;
+}
+
+export interface Conversation {
   id: string;
-  author: Role;
-  text: string;
+  context?: ConversationContext | null;
+  messages: ConversationMessage[];
+  debug?: Array<Record<string, unknown>> | null;
 }
 
-export interface ChatRequestDto {
-  prompt: string;
-}
-
-export interface ChatResponseDto {
-  messages: ChatMessage[];
-  finalRequest?: string | null;
+export interface ConversationRequest {
+  id?: string;
+  context?: ConversationContext | null;
+  messages: ConversationMessage[];
 }

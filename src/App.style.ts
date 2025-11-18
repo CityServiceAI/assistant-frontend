@@ -82,6 +82,7 @@ export const appStyles: AppStyles = {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    minHeight: 0,
   },
   inputWrapper: {
     mt: 2,

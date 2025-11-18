@@ -12,6 +12,7 @@ export const locale = {
   },
   placeholders: {
     inputPlaceholder: 'Опишіть, у чому полягає проблема…',
+    loader: 'Формуємо відповідь…',
   },
   titles: {
     chatTitle: 'AI-навігатор комунальних послуг',
