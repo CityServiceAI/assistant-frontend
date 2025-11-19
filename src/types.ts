@@ -22,15 +22,15 @@ export interface ConversationContext {
   emergency?: string | null;
 }
 
-export interface Conversation {
-  id: string;
-  context?: ConversationContext | null;
-  messages: ConversationMessage[];
-  debug?: Array<Record<string, unknown>> | null;
+export interface Summary {
+  normalized_description: string;
+  context_notes: string;
 }
 
-export interface ConversationRequest {
+export interface Conversation {
   id?: string;
   context?: ConversationContext | null;
   messages: ConversationMessage[];
+  summary?: Summary;
+  trace?: Array<Record<string, unknown>> | null;
 }

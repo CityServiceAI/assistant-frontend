@@ -1,6 +1,6 @@
-import type { Conversation, ConversationRequest } from '@/types';
+import type { Conversation } from '@/types';
 
-export const sendConversation = async (body: ConversationRequest): Promise<Conversation> => {
+export const sendConversation = async (body: Conversation): Promise<Conversation> => {
   const response = await fetch('/api/conversations/', {
     method: 'POST',
     headers: {
@@ -14,6 +14,6 @@ export const sendConversation = async (body: ConversationRequest): Promise<Conve
   }
 
   const result = response.json() as Promise<Conversation>;
-  console.log(result);
+  console.log(await result);
   return result;
 };

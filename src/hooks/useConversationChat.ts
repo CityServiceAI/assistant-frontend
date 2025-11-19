@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import type { Conversation, ConversationMessage, ConversationRequest } from '@/types';
+import type { Conversation, ConversationMessage } from '@/types';
 
 import { sendConversation } from '../api';
 
@@ -34,17 +34,19 @@ export const useConversationChat = () => {
           id: 'pending',
           context: null,
           messages: nextMessages,
-          debug: [],
+          trace: [],
         } as Conversation;
       });
 
       setIsSending(true);
       try {
-        const requestBody: ConversationRequest = conversation
+        const requestBody: Conversation = conversation
           ? {
               id: conversation.id,
               context: conversation.context ?? null,
               messages: nextMessages,
+              summary: conversation.summary,
+              trace: conversation.trace,
             }
           : {
               messages: nextMessages,
