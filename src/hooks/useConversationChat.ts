@@ -46,6 +46,7 @@ export const useConversationChat = () => {
               context: conversation.context ?? null,
               messages: nextMessages,
               summary: conversation.summary,
+              need_clarification: conversation.need_clarification,
               trace: conversation.trace,
             }
           : {

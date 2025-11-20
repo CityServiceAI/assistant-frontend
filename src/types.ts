@@ -33,4 +33,5 @@ export interface Conversation {
   messages: ConversationMessage[];
   summary?: Summary;
   trace?: Array<Record<string, unknown>> | null;
+  need_clarification?: boolean | null 
 }
