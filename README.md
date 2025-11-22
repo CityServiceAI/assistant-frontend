@@ -1,73 +1,208 @@
-# React + TypeScript + Vite
+# City Service AI Assistant Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend додаток для AI асистента міських сервісів, побудований на React, TypeScript та Vite.
 
-Currently, two official plugins are available:
+## 🚀 Технології
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - UI бібліотека
+- **TypeScript** - типізація
+- **Vite 7** - збірка та dev сервер
+- **Material-UI (MUI)** - компоненти UI
+- **Emotion** - стилізація
+- **Docker** - контейнеризація
+- **Nginx** - веб-сервер для production
 
-## React Compiler
+## 📋 Вимоги
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- Node.js 22+
+- npm
+- Docker та Docker Compose (для контейнеризації)
 
-## Expanding the ESLint configuration
+## 🛠️ Встановлення
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Локальна розробка
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Клонуйте репозиторій:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone <repository-url>
+cd assistant-frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Встановіть залежності:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+3. Створіть `.env` файл в корені проєкту:
+
+```env
+VITE_APP_ENV=development
+VITE_API_BASE_URL=http://127.0.0.1:8000
+```
+
+4. Запустіть dev сервер:
+
+```bash
+npm run dev
+```
+
+Додаток буде доступний на `http://localhost:5173`
+
+## ⚙️ Налаштування
+
+### Змінні середовища
+
+#### Для локальної розробки (`.env`)
+
+- `VITE_APP_ENV` - середовище (development/production)
+- `VITE_API_BASE_URL` - URL бекенду для Vite proxy (використовується в `vite.config.ts`)
+
+#### Для Docker
+
+- `BACKEND_URL` - URL бекенду для nginx proxy (за замовчуванням: `http://host.docker.internal:8000`)
+- `VITE_APP_ENV` - середовище для build (за замовчуванням: `production`)
+
+### Vite Proxy
+
+У режимі розробки (`npm run dev`) Vite автоматично проксує запити `/api/*` до бекенду, налаштованого в `vite.config.ts` через змінну `VITE_API_BASE_URL`.
+
+### Production Build
+
+У production build всі запити йдуть через `/api`, який обробляється nginx proxy. URL бекенду налаштовується через змінну `BACKEND_URL` в Docker контейнері.
+
+## 🐳 Docker
+
+### Збірка та запуск
+
+```bash
+# Збірка образу
+docker-compose build
+
+# Запуск контейнера
+docker-compose up
+
+# Запуск у фоновому режимі
+docker-compose up -d
+```
+
+Додаток буде доступний на `http://localhost:8080`
+
+### Налаштування для production
+
+Встановіть змінні середовища перед збіркою:
+
+```bash
+# Для локального Docker
+BACKEND_URL=http://host.docker.internal:8000 docker-compose build
+
+# Для AWS/Production
+BACKEND_URL=https://api.production.com docker-compose build
+```
+
+Або створіть `.env` файл:
+
+```env
+BACKEND_URL=https://api.production.com
+VITE_APP_ENV=production
+```
+
+## 📦 Структура проєкту
+
+```
+assistant-frontend/
+├── src/
+│   ├── api/              # API клієнт
+│   │   └── index.ts      # Функції для роботи з API
+│   ├── components/        # React компоненти
+│   │   ├── Chat/         # Компонент чату
+│   │   ├── FinalRequest/ # Компонент фінального запиту
+│   │   └── InputBar/     # Компонент вводу
+│   ├── hooks/            # React хуки
+│   │   ├── useChatMessages.ts
+│   │   └── useConversationChat.ts
+│   ├── styles/           # Глобальні стилі
+│   ├── theme/            # Тема Material-UI
+│   ├── App.tsx           # Головний компонент
+│   ├── env.ts            # Конфігурація змінних середовища
+│   ├── locale.ts         # Локалізація
+│   ├── main.tsx          # Точка входу
+│   └── types.ts          # TypeScript типи
+├── public/               # Статичні файли
+├── docker-compose.yml    # Docker Compose конфігурація
+├── Dockerfile            # Docker образ
+├── nginx.conf            # Nginx конфігурація (шаблон)
+├── docker-entrypoint.sh  # Entrypoint скрипт для Docker
+├── vite.config.ts        # Vite конфігурація
+└── package.json          # Залежності та скрипти
+```
+
+## 📜 Скрипти
+
+- `npm run dev` - запуск dev сервера
+- `npm run build` - збірка для production
+- `npm run preview` - перегляд production build
+- `npm run lint` - перевірка коду ESLint
+- `npm run lint:fix` - автоматичне виправлення помилок ESLint
+- `npm run format` - перевірка форматування Prettier
+- `npm run format:fix` - автоматичне форматування коду
+
+## 🌐 Deployment на AWS
+
+### ECS/EC2
+
+1. Зберіть Docker образ:
+
+```bash
+docker build -t assistant-frontend .
+```
+
+2. Запустіть контейнер з змінними середовища:
+
+```bash
+docker run -d \
+  -p 80:80 \
+  -e BACKEND_URL=https://api.production.com \
+  assistant-frontend
+```
+
+### Налаштування змінних середовища
+
+В AWS ECS/EC2 встановіть змінну `BACKEND_URL` в конфігурації контейнера або через AWS Systems Manager Parameter Store.
+
+## 🔧 API
+
+### Endpoints
+
+- `POST /api/conversations/` - відправка повідомлення в чат
+
+### Типи даних
+
+Див. `src/types.ts` для повного опису типів:
+
+- `Conversation` - основна структура розмови
+- `ConversationMessage` - повідомлення в чаті
+- `ConversationContext` - контекст розмови
+- `Summary` - підсумок розмови
+
+## 🐛 Troubleshooting
+
+### CORS помилки
+
+Якщо виникають CORS помилки:
+
+1. Перевірте, що запити йдуть через `/api` (не напряму до бекенду)
+2. Перевірте налаштування `BACKEND_URL` в Docker
+3. Переконайтеся, що nginx proxy правильно налаштований
+
+### Vite proxy не працює
+
+1. Перевірте, що `VITE_API_BASE_URL` встановлено в `.env`
+2. Перезапустіть dev сервер після зміни `.env`
+3. Перевірте, що бекенд доступний за вказаним URL
+
+### Docker build не бачить змінні
+
+1. Переконайтеся, що змінні передаються через `docker-compose.yml` або `.env`
+2. Перевірте, що `ARG` та `ENV` правильно налаштовані в `Dockerfile`
