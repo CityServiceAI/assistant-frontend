@@ -1,7 +1,8 @@
+import { env } from '@/env';
 import type { Conversation } from '@/types';
 
 export const sendConversation = async (body: Conversation): Promise<Conversation> => {
-  const response = await fetch('/api/conversations/', {
+  const response = await fetch(`${env.apiBaseUrl}/conversations/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
