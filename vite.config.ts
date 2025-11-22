@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       proxy: {
         '/api': {
-          target: apiTarget,
+          target: 'http://assistant-orchestrator-alb-2048699088.eu-central-1.elb.amazonaws.com/',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
